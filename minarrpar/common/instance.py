@@ -12,6 +12,7 @@ class Instance:
                 [int(cell) for cell in row.split()]
                 for row in matrix_lines
             ])
+            self.name = file
 
     def __repr__(self):
         result = ''

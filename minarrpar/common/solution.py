@@ -11,6 +11,7 @@ class Solution:
         self.p = instance.p
         self.h = np.array(list(h) if h else self.__generate_dividers())
         self.v = np.array(list(v) if v else self.__generate_dividers())
+        self.name = instance.name
 
     def __repr__(self):
         return (
