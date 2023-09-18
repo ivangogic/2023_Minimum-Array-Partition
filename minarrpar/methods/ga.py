@@ -41,35 +41,19 @@ def mutation(child: Individual, mutation_prob):
                 partition[idx] = partition[idx] + delta
 
 
-# def mutation(child: Individual, mutation_prob):
-#     total_delta = 0
-#     while random.random() < mutation_prob:
-#         partition = child.h if random.random() < 0.5 else child.v
-#         possible_mutations = []
-#         for i in range(1, child.p):
-#             if partition[i] - 1 > partition[i - 1]:
-#                 possible_mutations.append((i, -1))
-#             if partition[i] + 1 < partition[i + 1]:
-#                 possible_mutations.append((i, 1))
-#         idx, delta = random.choice(possible_mutations)
-#         partition[idx] = partition[idx] + delta
-#         total_delta += delta
-#     return total_delta
-
-
 def crossover(parent1: Individual, parent2: Individual, child: Individual):
     child.h = np.array(list(map(lambda x: round(x + random.choice([-0.1, 0.1])), (parent1.h + parent2.h) / 2)))
     child.v = np.array(list(map(lambda x: round(x + random.choice([-0.1, 0.1])), (parent1.v + parent2.v) / 2)))
 
 
-def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, elitism_size=0):
+def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, elitism_size=0, verbose=False):
     if elitism_size > 0 and (pop_size - elitism_size) % 2 == 1:
         elitism_size += 1
 
     population = [Individual(instance) for _ in range(pop_size)]
     new_population = [Individual(instance) for _ in range(pop_size)]
 
-    for iteration in (bar := tqdm(range(num_iters))):
+    for iteration in tqdm(range(num_iters)):
         if elitism_size > 0:
             population.sort(key=lambda x: x.fitness, reverse=True)
             new_population[:elitism_size] = deepcopy(population[:elitism_size])
@@ -89,14 +73,15 @@ def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, 
         population = deepcopy(new_population)
 
         # display progress
-        best = max(population, key=lambda x: x.fitness)
-        prob = mutation_prob * (num_iters - iteration/2) / num_iters
-        padding = len(str(num_iters))
-        bar.write(f'{iteration:>{padding}} / {num_iters} : mutation_prob={prob:.2f} best_value={best.value()}')
+        if verbose:
+            best = max(population, key=lambda x: x.fitness)
+            prob = mutation_prob * (num_iters - iteration/2) / num_iters
+            padding = len(str(num_iters))
+            print(f'{iteration:>{padding}} / {num_iters} : mutation_prob={prob:.2f} best_value={best.value()}')
 
     best_individual = max(population, key=lambda x: x.fitness)
     h = best_individual.h
     v = best_individual.v
     fitness = best_individual.fitness
     value = best_individual.value()
-    print(f'\n{h = }\n{v = }\n{fitness = }\n{value = }')
+    print(f'----------\n{h = }\n{v = }\n{fitness = }\n{value = }')

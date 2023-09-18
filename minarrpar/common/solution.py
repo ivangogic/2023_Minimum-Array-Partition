@@ -27,15 +27,14 @@ class Solution:
         return sorted(sample(range(1, self.n), self.p - 1) + [0, self.n])
 
     def __block_value(self, h: (int, int), v: (int, int)) -> int:
-        return np.sum(self.instance[h[0]:h[1], v[0]:v[1]])
+        return self.instance.calc_block_value(h, v)
 
     def value(self) -> int:
         largest = 0
         for i in range(0, self.p):
             for j in range(0, self.p):
-                h = (self.h[j], self.h[j + 1])
-                v = (self.v[i], self.v[i + 1])
+                h = (self.h[j], self.h[j + 1] - 1)
+                v = (self.v[i], self.v[i + 1] - 1)
                 current = self.__block_value(h, v)
-                # print(f'{h=} {v=} val={current}')
                 largest = max(largest, current)
         return largest
