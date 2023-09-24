@@ -82,6 +82,9 @@ def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, 
     best_individual = max(population, key=lambda x: x.fitness)
     h = best_individual.h
     v = best_individual.v
-    fitness = best_individual.fitness
     value = best_individual.value()
-    print(f'----------\n{h = }\n{v = }\n{fitness = }\n{value = }')
+
+    print('--------------------')
+    print(f'h = {list(h)}')
+    print(f'v = {list(v)}')
+    print(f'result = {value}')
