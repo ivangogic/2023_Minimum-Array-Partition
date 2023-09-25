@@ -1,4 +1,4 @@
-from random import sample
+from random import sample, shuffle
 import numpy as np
 from minarrpar.common.instance import Instance
 
@@ -38,3 +38,19 @@ class Solution:
                 current = self.__block_value(h, v)
                 largest = max(largest, current)
         return largest
+
+    def make_small_change(self):
+        choices = []
+
+        for i in range(1, self.p):
+            if self.h[i] - 1 > self.h[i - 1]:
+                choices.append((0, i, -1))
+            if self.h[i] + 1 < self.h[i + 1]:
+                choices.append((0, i, 1))
+            if self.v[i] - 1 > self.v[i - 1]:
+                choices.append((1, i, -1))
+            if self.v[i] + 1 < self.v[i + 1]:
+                choices.append((1, i, 1))
+
+        shuffle(choices)
+        return choices
