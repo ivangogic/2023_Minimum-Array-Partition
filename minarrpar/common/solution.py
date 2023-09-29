@@ -53,3 +53,16 @@ class Solution:
 
         shuffle(choices)
         return choices
+
+    def fix(self):
+        unique = set(self.v)
+        duplicate = len(self.v) - len(unique)
+        choices = set(range(1, self.n)).difference(unique)
+        part = sorted(list(unique) + sample(list(choices), duplicate))
+        self.v = np.array(part)
+
+        unique = set(self.h)
+        duplicate = len(self.h) - len(unique)
+        choices = set(range(1, self.n)).difference(unique)
+        part = sorted(list(unique) + sample(list(choices), duplicate))
+        self.h = np.array(part)

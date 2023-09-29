@@ -59,6 +59,8 @@
     
     Consider two individuals, $A$ and $B$, with partitions $[1, 3, 9]$ and $[2, 5, 7]$. Their child $C$ will try to take a middle path in the hopes of bettering their fitness, by taking the average of respective divider pairs: $C = [\frac{1+2}{2}, \frac{3+5}{2}, \frac{9+7}{2}] = [1.5, 4, 8]$. Since dividors have to be whole numbers, we fix $C$ by either rounding the first element down, or rounding it up (chosen randomly).
 
+    A problem arises when multiple dividors end up on the same spot after crossover, we solve this by putting the problematic dividers in random unoccupied spots. This guarantees all individuals are feasible, while improving their fitness. 
+
     \subsubsection{Mutation}
 
     Mutation is achieved by trying to make small movements of individua dividers with a given probability to do so, considering there is an available place to move.

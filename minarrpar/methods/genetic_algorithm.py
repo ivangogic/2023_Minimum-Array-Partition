@@ -44,6 +44,7 @@ def mutation(child: Individual, mutation_prob):
 def crossover(parent1: Individual, parent2: Individual, child: Individual):
     child.h = np.array(list(map(lambda x: round(x + random.choice([-0.1, 0.1])), (parent1.h + parent2.h) / 2)))
     child.v = np.array(list(map(lambda x: round(x + random.choice([-0.1, 0.1])), (parent1.v + parent2.v) / 2)))
+    child.fix()
 
 
 def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, elitism_size=0, disabled_pbar=True):
