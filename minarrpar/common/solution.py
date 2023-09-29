@@ -16,10 +16,9 @@ class Solution:
     def __repr__(self):
         return (
                 f'Solution(\n' +
-                f'  n = {self.n}\n' +
-                f'  p = {self.p}\n' +
                 f'  h = {self.h}\n' +
                 f'  v = {self.v}\n' +
+                f'  result = {self.value()}\n' +
                 f')'
         )
 
@@ -37,7 +36,7 @@ class Solution:
                 v = (self.v[i], self.v[i + 1] - 1)
                 current = self.__block_value(h, v)
                 largest = max(largest, current)
-        return largest
+        return int(largest)
 
     def make_small_change(self):
         choices = []

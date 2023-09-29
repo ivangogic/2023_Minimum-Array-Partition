@@ -5,13 +5,13 @@ from minarrpar.common.instance import Instance
 from minarrpar.common.solution import Solution
 
 
-def sa(instance: Instance, num_iters):
+def sa(instance: Instance, num_iters, disabled_pbar=True):
     solution = Solution(instance)
     value = solution.value()
     best_solution = [deepcopy(solution.h), deepcopy(solution.v)]
     best_value = value
 
-    for i in tqdm(range(1, num_iters + 1)):
+    for i in tqdm(range(1, num_iters + 1), disable=disabled_pbar):
         new_choices = solution.make_small_change()
 
         for choice in new_choices:
@@ -42,10 +42,12 @@ def sa(instance: Instance, num_iters):
                     else:
                         solution.v[choice[1]] -= choice[2]
 
-    print('--------------------')
-    print(f'h = {list(best_solution[0])}')
-    print(f'v = {list(best_solution[1])}')
-    print(f'result = {best_value}')
+    # print('--------------------')
+    # print(f'h = {list(best_solution[0])}')
+    # print(f'v = {list(best_solution[1])}')
+    # print(f'result = {best_value}')
+
+    return Solution(instance, list(best_solution[0]), list(best_solution[1]))
 
 
 def shake(solution, choices, k):
@@ -67,11 +69,11 @@ def revert(solution, choices, chosen):
             solution.v[choices[resource][1]] -= choices[resource][2]
 
 
-def vns(instance: Instance, num_iters, k_max, move_prob):
+def vns(instance: Instance, num_iters, k_max, move_prob, disabled_pbar=True):
     solution = Solution(instance)
     value = solution.value()
 
-    for _ in tqdm(range(1, num_iters + 1)):
+    for _ in tqdm(range(1, num_iters + 1), disable=disabled_pbar):
         new_choices = solution.make_small_change()
         k_curr = min(k_max, len(new_choices))
 
@@ -85,7 +87,9 @@ def vns(instance: Instance, num_iters, k_max, move_prob):
             else:
                 revert(solution, new_choices, choice)
 
-    print('--------------------')
-    print(f'h = {list(solution.h)}')
-    print(f'v = {list(solution.v)}')
-    print(f'result = {value}')
+    # print('--------------------')
+    # print(f'h = {list(solution.h)}')
+    # print(f'v = {list(solution.v)}')
+    # print(f'result = {value}')
+
+    return solution

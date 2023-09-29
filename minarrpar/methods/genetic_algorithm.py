@@ -46,14 +46,14 @@ def crossover(parent1: Individual, parent2: Individual, child: Individual):
     child.v = np.array(list(map(lambda x: round(x + random.choice([-0.1, 0.1])), (parent1.v + parent2.v) / 2)))
 
 
-def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, elitism_size=0, verbose=False):
+def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, elitism_size=0, disabled_pbar=True):
     if elitism_size > 0 and (pop_size - elitism_size) % 2 == 1:
         elitism_size += 1
 
     population = [Individual(instance) for _ in range(pop_size)]
     new_population = [Individual(instance) for _ in range(pop_size)]
 
-    for iteration in tqdm(range(num_iters)):
+    for iteration in tqdm(range(num_iters), disable=disabled_pbar):
         if elitism_size > 0:
             population.sort(key=lambda x: x.fitness, reverse=True)
             new_population[:elitism_size] = deepcopy(population[:elitism_size])
@@ -72,19 +72,14 @@ def ga(instance: Instance, pop_size, num_iters, tournament_size, mutation_prob, 
 
         population = deepcopy(new_population)
 
-        # display progress
-        if verbose:
-            best = max(population, key=lambda x: x.fitness)
-            prob = mutation_prob * (num_iters - iteration/2) / num_iters
-            padding = len(str(num_iters))
-            print(f'{iteration:>{padding}} / {num_iters} : mutation_prob={prob:.2f} best_value={best.value()}')
-
     best_individual = max(population, key=lambda x: x.fitness)
     h = best_individual.h
     v = best_individual.v
     value = best_individual.value()
 
-    print('--------------------')
-    print(f'h = {list(h)}')
-    print(f'v = {list(v)}')
-    print(f'result = {value}')
+    # print('--------------------')
+    # print(f'h = {list(h)}')
+    # print(f'v = {list(v)}')
+    # print(f'result = {value}')
+
+    return Solution(instance, list(h), list(v))

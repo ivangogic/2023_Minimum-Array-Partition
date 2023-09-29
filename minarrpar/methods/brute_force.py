@@ -2,11 +2,12 @@ import random
 import numpy as np
 from random import shuffle
 from itertools import combinations, product
-from tqdm.notebook import tqdm, trange
+from tqdm.notebook import tqdm
 from minarrpar.common.instance import Instance
+from minarrpar.common.solution import Solution
 
 
-def bf(instance: Instance):
+def bf(instance: Instance, disabled_pbar=True):
     result = float('inf')
     result_h, result_v = [], []
     combs = list(combinations(range(1, instance.n), instance.p - 1))
@@ -17,8 +18,9 @@ def bf(instance: Instance):
     total_combinations = len(combs) ** 2
     total_sum = np.sum(instance.matrix)
     total_block_count = instance.p ** 2
+    evaluated_blocks = 0
 
-    for (comb_h, comb_v) in tqdm(product(combs_h, combs_v), total=total_combinations):
+    for (comb_h, comb_v) in tqdm(product(combs_h, combs_v), total=total_combinations, disable=disabled_pbar):
         curr = 0
         visited_block_count = 0
         visited_block_sum = 0
@@ -38,12 +40,18 @@ def bf(instance: Instance):
                 continue
             break
         else:
-            result = min(curr, result)
+            if result > curr:
+                result = curr
+                result_h, result_v = comb_h, comb_v
 
-        if result == curr:
-            result_h, result_v = comb_h, comb_v
+        evaluated_blocks += visited_block_count
 
-    print('--------------------')
-    print(f'h = {list(result_h)}')
-    print(f'v = {list(result_v)}')
-    print(f'result = {result}')
+    # percentage_cut = 100 * (1 - evaluated_blocks / (total_block_count * total_combinations))
+    # print(f'{percentage_cut:.2f}% cut')
+
+    # print('--------------------')
+    # print(f'h = {list(result_h)}')
+    # print(f'v = {list(result_v)}')
+    # print(f'result = {result}')
+
+    return Solution(instance, list(result_h), list(result_v))
