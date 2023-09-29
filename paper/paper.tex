@@ -7,6 +7,7 @@
     \addtolength{\textheight}{3cm}
 
     \usepackage{amsmath}
+    \usepackage{hyperref}
 
     \setlength{\parindent}{0pt}
     \setlength{\parskip}{6pt}
@@ -63,7 +64,13 @@
 
 \subsection{Simulated Annealing (SA)}
 
+	Simulated Annealing is a probabilistic optimization method inspired by annealing in metallurgy. It's effective for combinatorial optimization problems with large search spaces. SA starts with an initial solution and uses a temperature schedule to accept worse solutions with a probability. \\
+	During the SA process, small changes are introduced through random movements of block borders, allowing for exploration of the solution space.
+
 \subsection{Variable Neighbourhood Search (VNS)}
+
+	Variable Neighborhood Search (VNS) is an optimization technique that iteratively explores different neighborhoods of solutions. It begins with an initial solution and systematically varies the neighborhood structure to search for better solutions. \\
+	During the VNS process, changes are introduced through random movements of (multiple) block borders.
 
 \section{Method evaluation}
 
@@ -202,8 +209,19 @@ Testcase: tests/squared_n100_p10.in
 
 \section{Failed ideas}
 
+\subsection{Linear Programming}
+
+	We initially had an idea to solve the problem using linear programming, as it seemed easy to define all the conditions that needed to hold true. The problem arose when defining the cost function, as it required block borders as matrix indices, and it appears that it's not possible to index the array with LP variables.
+	
 \section{Conclusion}
 
+	In conclusion, the Minimum Array Partition problem has been established as NP-hard, making it challenging to find optimal solutions efficiently. While there exist polynomial algorithms that can provide approximations within a constant factor, their implementation complexity often outweighs the benefits (our approximations factor is better). \\
+	As demonstrated in our study, ... \\
+	These methods strike a balance between computational efficiency and solution quality, making them valuable tools for addressing the Minimum Array Partition problem.
+
 \section{References}
+
+\href{https://doi.org/10.1007/3-540-63165-8_216}{Efficient array partitioning} \\
+\href{https://doi.org/10.1007/BFb0030123}{On the complexity of the generalized block distribution}
 
 \end{document}
